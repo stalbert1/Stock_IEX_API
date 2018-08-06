@@ -7,14 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF6C5C4521114F6100220F97 /* StockBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6C5C4421114F6100220F97 /* StockBarView.swift */; };
 		CFA41CB920DEB0AC0011EF30 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA41CB820DEB0AC0011EF30 /* AppDelegate.swift */; };
 		CFA41CBB20DEB0AC0011EF30 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA41CBA20DEB0AC0011EF30 /* ViewController.swift */; };
 		CFA41CBE20DEB0AC0011EF30 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFA41CBC20DEB0AC0011EF30 /* Main.storyboard */; };
 		CFA41CC020DEB0AE0011EF30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFA41CBF20DEB0AE0011EF30 /* Assets.xcassets */; };
 		CFA41CC320DEB0AE0011EF30 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFA41CC120DEB0AE0011EF30 /* LaunchScreen.storyboard */; };
+		CFA41CCB20DECFF80011EF30 /* StockInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA41CCA20DECFF80011EF30 /* StockInfo.swift */; };
+		CFF4CCB420E8157B00A063BF /* StockStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF4CCB320E8157B00A063BF /* StockStats.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CF6C5C4421114F6100220F97 /* StockBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockBarView.swift; sourceTree = "<group>"; };
 		CFA41CB520DEB0AC0011EF30 /* Stock_IEX_API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stock_IEX_API.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA41CB820DEB0AC0011EF30 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFA41CBA20DEB0AC0011EF30 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +26,8 @@
 		CFA41CBF20DEB0AE0011EF30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFA41CC220DEB0AE0011EF30 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CFA41CC420DEB0AE0011EF30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFA41CCA20DECFF80011EF30 /* StockInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockInfo.swift; sourceTree = "<group>"; };
+		CFF4CCB320E8157B00A063BF /* StockStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockStats.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +41,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF35BDD921166BD300A4259E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CF6C5C4421114F6100220F97 /* StockBarView.swift */,
+				CFA41CBC20DEB0AC0011EF30 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CF35BDDA21166C0100A4259E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CFA41CCA20DECFF80011EF30 /* StockInfo.swift */,
+				CFF4CCB320E8157B00A063BF /* StockStats.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CF35BDDB21166C1200A4259E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CFA41CBA20DEB0AC0011EF30 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		CFA41CAC20DEB0AC0011EF30 = {
 			isa = PBXGroup;
 			children = (
@@ -54,9 +86,10 @@
 		CFA41CB720DEB0AC0011EF30 /* Stock_IEX_API */ = {
 			isa = PBXGroup;
 			children = (
+				CF35BDDA21166C0100A4259E /* Model */,
+				CF35BDD921166BD300A4259E /* View */,
+				CF35BDDB21166C1200A4259E /* Controller */,
 				CFA41CB820DEB0AC0011EF30 /* AppDelegate.swift */,
-				CFA41CBA20DEB0AC0011EF30 /* ViewController.swift */,
-				CFA41CBC20DEB0AC0011EF30 /* Main.storyboard */,
 				CFA41CBF20DEB0AE0011EF30 /* Assets.xcassets */,
 				CFA41CC120DEB0AE0011EF30 /* LaunchScreen.storyboard */,
 				CFA41CC420DEB0AE0011EF30 /* Info.plist */,
@@ -135,7 +168,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFA41CCB20DECFF80011EF30 /* StockInfo.swift in Sources */,
 				CFA41CBB20DEB0AC0011EF30 /* ViewController.swift in Sources */,
+				CFF4CCB420E8157B00A063BF /* StockStats.swift in Sources */,
+				CF6C5C4521114F6100220F97 /* StockBarView.swift in Sources */,
 				CFA41CB920DEB0AC0011EF30 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +319,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HJ3N23F853;
 				INFOPLIST_FILE = Stock_IEX_API/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -301,6 +338,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HJ3N23F853;
 				INFOPLIST_FILE = Stock_IEX_API/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
