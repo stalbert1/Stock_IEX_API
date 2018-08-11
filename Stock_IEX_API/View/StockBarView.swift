@@ -17,17 +17,13 @@ class StockBarView: UIView {
     //this will be set in setup and crete the window size as what is created in storyboard.
     var windowSize = CGRect()
     
-    //dont think this is the way to go!!!
-    var pricePosition: CGFloat = 0.9
-    var fiftyMAPosition: CGFloat = 0.4
-    var twoMAPosition: CGFloat = 0.2
-    
     //self children Views
-    var priceLabel = UILabel()
-    var fiftyTwoWeekHighLabel = UILabel()
-    var fiftyTwoWeekLowLabel = UILabel()
-    var fiftyDayMALabel = UILabel()
-    var twoHundredDayMALabel = UILabel()
+    //Needed so that the labels will be deleted...
+    private var priceLabel = UILabel()
+    private var fiftyTwoWeekHighLabel = UILabel()
+    private var fiftyTwoWeekLowLabel = UILabel()
+    private var fiftyDayMALabel = UILabel()
+    private var twoHundredDayMALabel = UILabel()
     
     //self children view
     private var barGraphView = UIView()
@@ -43,8 +39,6 @@ class StockBarView: UIView {
     //@IBInspectable
     var backColor: UIColor = UIColor.black
 
-    
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         print("override init called")
@@ -62,120 +56,102 @@ class StockBarView: UIView {
         
     }
     
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//
-//    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+    }
     
-    //need to make a calculated property
-    func updateBarPositions (priceOfStock: Float, fiftyTwoWeekHighStock: Float, fiftyTwoWeekLowStock: Float) {
-        
-        //here is where we get the 3 floats as the price and we will convert to a pct in the graph and update the 3 bars on the view
-        
+    
+    func updateStockBarView (stockInfo: StockInfo, stockStats: StockStats) {
+ 
+    
+        //determining the height of the price bar, 50 and 200 day MA bars.
         let metricBarHeight = heightView * 0.02
         
-        //This is the position in % of where the line will be
-        //this still needs work line is falling through
-
-        let spread = fiftyTwoWeekHighStock - fiftyTwoWeekLowStock
-        let pctInGraph = (priceOfStock - fiftyTwoWeekLowStock) / spread
-        
-        var pricePos = heightView - (heightView * CGFloat(pctInGraph))
+        //Calculating the position of the current price of the stock bar
+        let spread = stockStats.fiftyTwoWeekHigh - stockStats.fiftyTwoWeekLow
+        let pricePctInGraph = (stockInfo.latestPrice - stockStats.fiftyTwoWeekLow) / spread
+        var pricePos = heightView - (heightView * CGFloat(pricePctInGraph))
         //now correct for thickness of line
         pricePos = pricePos - (metricBarHeight / 2)
         
+        //adding the price bar
         priceBar.frame = CGRect(x: 0, y: pricePos, width: widthView, height: metricBarHeight)
         priceBar.backgroundColor = UIColor.red
         barGraphView.addSubview(priceBar)
         
-    }
-    
-    func refresh() {
         
-    
-//        self.setNeedsLayout()
-//        self.layoutIfNeeded()
+        //Calculating the position of the 50 day moving average price in the stock bar
+        let fiftyMAPctInGraph = (stockStats.fiftyDayMA - stockStats.fiftyTwoWeekLow) / spread
+        var fiftyMAPos = heightView - (heightView * CGFloat(fiftyMAPctInGraph))
+        fiftyMAPos = fiftyMAPos - (metricBarHeight / 2)
         
-        print("StockBar View refresh is called")
-        //going to have all the things that need to be updated in this function
-        //I will call this from the caller to update the UI
-        
-        //add current price bar
-        //each bar would be 2% of the height of the bar
-        let metricBarHeight = heightView * 0.02
-        
-        //This is the position in % of where the line will be
-        //this still needs work line is falling through
-        
-        
-        let price = (heightView * pricePosition) - metricBarHeight
-        
-        //let priceBar = UIView()
-        priceBar.frame = CGRect(x: 0, y: price, width: widthView, height: metricBarHeight)
-        priceBar.backgroundColor = UIColor.magenta
-        barGraphView.addSubview(priceBar)
-        
-        //need to make it a private ivar or it will not update view correctly
-        //let fiftyDayMA = UIView()
-        let fiftyMA = (heightView * fiftyMAPosition)
-        fiftyDayMA.frame = CGRect(x: 0, y: fiftyMA, width: widthView, height: metricBarHeight)
+        //adding the 50 day moving average bar
+        fiftyDayMA.frame = CGRect(x: 0, y: fiftyMAPos, width: widthView, height: metricBarHeight)
         fiftyDayMA.backgroundColor = UIColor.green
         barGraphView.addSubview(fiftyDayMA)
         
-        //let twoHundredDayMAView = UIView()
-        let twoHundredMA = (heightView * twoMAPosition)
-        twoHundredDayMAView.frame = CGRect(x: 0, y: twoHundredMA, width: widthView, height: metricBarHeight)
+        //Calculating the position of the 200 day moving average price in the stock bar
+        let twoHundredMAPctInGraph = (stockStats.twoHundredDayMA - stockStats.fiftyTwoWeekLow) / spread
+        var twoHundredMAPos = heightView - (heightView * CGFloat(twoHundredMAPctInGraph))
+        twoHundredMAPos = twoHundredMAPos - (metricBarHeight / 2)
+        
+        //adding the 200 day moving average bar
+        twoHundredDayMAView.frame = CGRect(x: 0, y: twoHundredMAPos, width: widthView, height: metricBarHeight)
         twoHundredDayMAView.backgroundColor = UIColor.cyan
         barGraphView.addSubview(twoHundredDayMAView)
         
+        
+        //do a function that passes in a price and price pct in graph and get back a correction factor...
+        //determine the y pos of price label
+        var priceLabelPosY: CGFloat = pricePos * 1.07
+        print("Price Pct in graph is \(pricePctInGraph)")
+        print("priceLabelYPos start is \(priceLabelPosY)")
+        
+        //if stock is at 52 week high the pcice pct in graph is close to 1.00 as 100 percent
+        if pricePctInGraph > 0.8 {
+            priceLabelPosY = priceLabelPosY + 20
+        } else if pricePctInGraph < 0.3 {
+            priceLabelPosY = priceLabelPosY - 10
+        }
+     
         //adding labels to self not the barGraphView
-        //priceLabel.text = ""
-        priceLabel = UILabel(frame: CGRect(x: 10, y: 10 + (price * 1.1), width: 200, height: 21))
-        priceLabel.textColor = .white
-        
-        // may not be necessary (e.g., if the width & height match the superview)
-        // if you do need to center, CGPointMake has been deprecated, so use this
-        //priceLabel.center = CGPoint(x: 160, y: 284)
-        
-        // this changed in Swift 3 (much better, no?)
+        priceLabel.frame = CGRect(x: 20, y: priceLabelPosY, width: 200, height: 21)
+        priceLabel.text = "Price \(stockInfo.latestPrice)"
+        priceLabel.textColor = .red
         priceLabel.textAlignment = .left
-        //priceLabel.text = "Price $32.89"
         self.addSubview(priceLabel)
         
-       fiftyTwoWeekHighLabel.text = ""
-        fiftyTwoWeekHighLabel = UILabel(frame: CGRect(x: windowSize.midX - 100, y: 2, width: 200, height: 21))
+        //52 week High label
+        fiftyTwoWeekHighLabel.frame = CGRect(x: windowSize.midX - 100, y: 2, width: 200, height: 21)
+        fiftyTwoWeekHighLabel.text = "52 Week High \(stockStats.fiftyTwoWeekHigh)"
         fiftyTwoWeekHighLabel.textColor = .white
         fiftyTwoWeekHighLabel.textAlignment = .center
-        //fiftyTwoWeekHighLabel.text = "52 week high $67.98"
         self.addSubview(fiftyTwoWeekHighLabel)
         
-        
-         fiftyTwoWeekLowLabel.text = ""
-        fiftyTwoWeekLowLabel = UILabel(frame: CGRect(x: windowSize.midX - 100, y: windowSize.height - 25, width: 200, height: 21))
+        //52 week Low label
+        fiftyTwoWeekLowLabel.frame = CGRect(x: windowSize.midX - 100, y: windowSize.height - 25, width: 200, height: 21)
+        fiftyTwoWeekLowLabel.text = "52 Week Low \(stockStats.fiftyTwoWeekLow)"
         fiftyTwoWeekLowLabel.textColor = .white
         fiftyTwoWeekLowLabel.textAlignment = .center
-        //fiftyTwoWeekLowLabel.text = "52 week low $21.89"
         self.addSubview(fiftyTwoWeekLowLabel)
         
-        fiftyDayMALabel.text = ""
-        fiftyDayMALabel = UILabel(frame: CGRect(x: windowSize.midX + 50 , y: 76, width: 200, height: 21))
-        fiftyDayMALabel.textColor = .white
+        //50 Day MA Label
+        fiftyDayMALabel.frame = CGRect(x: windowSize.midX + 50, y: (fiftyMAPos * 1.07), width: 200, height: 21)
+        fiftyDayMALabel.text = "50 MA \(stockStats.fiftyDayMA)"
+        fiftyDayMALabel.textColor = .green
         fiftyDayMALabel.textAlignment = .left
-        //fiftyDayMALabel.text = "50MA $22.56"
         self.addSubview(fiftyDayMALabel)
         
-        twoHundredDayMALabel.text = ""
-        twoHundredDayMALabel = UILabel(frame: CGRect(x: windowSize.midX + 50, y: 186, width: 200, height: 21))
-        twoHundredDayMALabel.textColor = .white
+        //200 Day MA Label
+        twoHundredDayMALabel.frame = CGRect(x: windowSize.midX + 50, y: (twoHundredMAPos * 1.07), width: 200, height: 21)
+        twoHundredDayMALabel.text = "200 MA \(stockStats.twoHundredDayMA)"
+        twoHundredDayMALabel.textColor = .cyan
         twoHundredDayMALabel.textAlignment = .left
-        //twoHundredDayMALabel.text = "200MA $45.78"
         self.addSubview(twoHundredDayMALabel)
         
-        
     }
-    
-    
-    
+
     func setup() {
         
         print("StockBarView setup called")
@@ -197,8 +173,6 @@ class StockBarView: UIView {
  
         //print("the size of bounds is  \(self.bounds)")
         //print("trying to find the correct one frame \(self.frame)")
-        
-        self.refresh()
         
     }
     

@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     
+    //Upper part of UI that is eventually going away to be replaced by a table view...
     @IBOutlet weak var lblCompanyName: UILabel!
     @IBOutlet weak var lblStockSymbol: UILabel!
     @IBOutlet weak var lblLatestPrice: UILabel!
@@ -19,12 +20,16 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var txtStockSymbolRequest: UITextField!
     
+    //Guaranteed because I drug it out in interface builder...
     @IBOutlet weak var stockBarView: StockBarView!
     
-    //going to have to create some vars so that can do math on 2 different sets of structs...
-    var lastPrice: Float?
-    var fiftyTwoWeekHighPrice: Float?
-    var fiftyTwoWeekLowPrice: Float?
+    //test timer to see the timing of the network call
+    //var timeStart: Date!
+    
+    var currentStockStats: StockStats?
+    var currentStockInfo: StockInfo?
+    
+    
     
     //baseURL = "https://api.iextrading.com/1.0"
     //stats will return the moving averages" stock/aapl/stats
@@ -44,6 +49,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //should stamp the start time
+        //timeStart = Date()
         
         
     }
@@ -53,24 +60,40 @@ class ViewController: UIViewController {
         //let networkTask = URLSession.shared.dataTask(with: <#T##URL#>, completionHandler: <#T##(Data?, URLResponse?, Error?) -> Void#>)
         let urlString = baseUrl + txtStockSymbolRequest.text! + suffixUrlQuote
         let url1 = URL(string: urlString)!
+        
+        //timeStart = Date()
+        
+        //Start of closure
         let networkTask1 = URLSession.shared.dataTask(with: url1) { (data, response, error) in
             //This is the network request can use the 3 variables data, response and error
             let jsonDecoder = JSONDecoder()
             if let dataToDecode = data {
                 if let stockInfo = try? jsonDecoder.decode(StockInfo.self, from: dataToDecode) {
-                    //print(stockInfo)
+                    
+//                    let timeOfCallOne = Date()
+//                    let seconds = timeOfCallOne.timeIntervalSince(self.timeStart)
+//                    print("\(seconds) seconds have elapsed this is the time of call one")
+//
+                    //This causes the code to be ran on the main que...
                     DispatchQueue.main.async {
                         self.lblCompanyName.text = stockInfo.companyName
                         self.lblStockSymbol.text = stockInfo.symbol
                         self.lblLatestPrice.text = "\(stockInfo.latestPrice)"
                         
-                        //update the StockBarView
-                        self.stockBarView.priceLabel.text = "Price \(stockInfo.latestPrice)"
+                        //copy the value of the struct to the ivar
+                        self.currentStockInfo = stockInfo
                         
-                        //get value
-                        self.lastPrice = stockInfo.latestPrice
+//                        let timeOfCallTwo = Date()
+//                        let moreSeconds = timeOfCallTwo.timeIntervalSince(self.timeStart)
+//                        print("\(moreSeconds) seconds have elapsed this is the time of call two")
+                        
+                        self.calculateAndUpdateGraph()
+                        
                     }
                     
+//                    let timeOfOtherCall = Date()
+//                    let otherSecs = timeOfOtherCall.timeIntervalSince(self.timeStart)
+//                    print("time of other call is \(otherSecs)")
                     //print(response ?? "response for stock info")
                     
                 } else {
@@ -86,25 +109,20 @@ class ViewController: UIViewController {
             let jDecoder = JSONDecoder()
             if let dataToDecode = data {
                 if let stockStats = try? jDecoder.decode(StockStats.self, from: dataToDecode) {
-                    //print(stockStats)
+                    
+                    //print("response is \(String(describing: response))")
+                    //This causes the code to be ran on the main que...
                     DispatchQueue.main.async {
                         self.lblFiftyDayMA.text = "\(stockStats.fiftyDayMA)"
                         self.lblTwoHundredDayMA.text = "\(stockStats.twoHundredDayMA)"
                         
-                        //update the StockBarView
-                        self.stockBarView.fiftyTwoWeekHighLabel.text = "52 week high \(stockStats.fiftyTwoWeekHigh)"
-                        self.stockBarView.fiftyTwoWeekLowLabel.text = "52 week low \(stockStats.fiftyTwoWeekLow)"
-                        self.stockBarView.fiftyDayMALabel.text = "50 MA \(stockStats.fiftyDayMA)"
-                        self.stockBarView.twoHundredDayMALabel.text = "200 MA \(stockStats.twoHundredDayMA)"
+                        //copy the value of the struct to the ivar
+                        self.currentStockStats = stockStats
                         
-                        //get values
-                        self.fiftyTwoWeekHighPrice = stockStats.fiftyTwoWeekHigh
-                        self.fiftyTwoWeekLowPrice = stockStats.fiftyTwoWeekLow
+                        //self.stockBarView.setNeedsDisplay()
                         
+                        //this is where the delay is need to implement a way to trigger the function after the delay??
                         self.calculateAndUpdateGraph()
-                        //self.stockBarView.refresh()
-                        self.stockBarView.setNeedsDisplay()
-                        //self.view.setNeedsDisplay()
                     }
                     
                     //print(response ?? "response for stock stats")
@@ -117,37 +135,20 @@ class ViewController: UIViewController {
         networkTask1.resume()
         networkTask2.resume()
         
-        //now that we have both sets of vals
-        //or maybe we dont have the vals
-        //calculateAndUpdateGraph()
-        //view.setNeedsDisplay()
-        
-        
-        
+      
     }
     
     func calculateAndUpdateGraph () {
         
-        //let spread = stockHigh - stockLow
-        
-        //need to properly unwrap the optional, sometimes it is still nil, think the network call may be laggy?
-        if (fiftyTwoWeekLowPrice != nil && fiftyTwoWeekHighPrice != nil && lastPrice != nil) {
-            //let spread = fiftyTwoWeekHighPrice! - fiftyTwoWeekLowPrice!
-            //let pctInGraph = (lastPrice! - fiftyTwoWeekLowPrice!) / spread
-            //stockBarView.pricePosition = CGFloat(pctInGraph)
+
+        //if either is nil, can't pass along otherwise it will crash in the StockBarView class
+        if (currentStockStats != nil && currentStockInfo != nil) {
             
-            //this sometimes updates with a weird number and requires a 2nd update to get correct.
-            //has not happened since I am checking all optionals
-            //print("pct in graph \(pctInGraph)")
-            //This will give the pct full to make the bar graph
-            //let pctInGraph = (value - stockLow) / spread
+            stockBarView.updateStockBarView(stockInfo: currentStockInfo!, stockStats: currentStockStats!)
+  
             
-            //stockBarView.updateBarPositions(priceOfStock: lastPrice!)
-            stockBarView.updateBarPositions(priceOfStock: lastPrice!, fiftyTwoWeekHighStock: fiftyTwoWeekHighPrice!, fiftyTwoWeekLowStock: fiftyTwoWeekLowPrice!)
-            
-        } else {
-            print("1 of the 3 variables were nil, try again")
         }
+        
         
         
         
@@ -156,8 +157,30 @@ class ViewController: UIViewController {
     
     @IBAction func searchForStockSymbolPressed(_ sender: UIButton) {
         
-        //print("search pressed")
+        //first thing is to reset the current one checked to nil
+        currentStockStats = nil
+        currentStockInfo = nil
+       
         requestStockInfo()
+      
+        //network call may not be finished may have to update a couple of times to get all the info???
+        // need to write a delegate that will wait until the network call is finished.
+        //While waiting display something to indicate that you are waiting on the network...
+        
+        //dismiss the keyboard...
+        self.view.endEditing(true)
+        
+//        let timeOfCallTwo = Date()
+//        let moreSeconds = timeOfCallTwo.timeIntervalSince(self.timeStart)
+//        print("\(moreSeconds) seconds have elapsed this is the time of call three")
+        
+        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        //dismiss the keyboard...
+        self.view.endEditing(true)
     }
     
     
