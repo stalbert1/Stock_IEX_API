@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF342D8B211FA6960009DB13 /* SymbolNetworkCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF342D8A211FA6960009DB13 /* SymbolNetworkCall.swift */; };
 		CF6C5C4521114F6100220F97 /* StockBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6C5C4421114F6100220F97 /* StockBarView.swift */; };
 		CFA41CB920DEB0AC0011EF30 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA41CB820DEB0AC0011EF30 /* AppDelegate.swift */; };
 		CFA41CBB20DEB0AC0011EF30 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA41CBA20DEB0AC0011EF30 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CF342D8A211FA6960009DB13 /* SymbolNetworkCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolNetworkCall.swift; sourceTree = "<group>"; };
 		CF6C5C4421114F6100220F97 /* StockBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StockBarView.swift; sourceTree = "<group>"; };
 		CFA41CB520DEB0AC0011EF30 /* Stock_IEX_API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stock_IEX_API.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA41CB820DEB0AC0011EF30 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			children = (
 				CFA41CCA20DECFF80011EF30 /* StockInfo.swift */,
 				CFF4CCB320E8157B00A063BF /* StockStats.swift */,
+				CF342D8A211FA6960009DB13 /* SymbolNetworkCall.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 				CFA41CBB20DEB0AC0011EF30 /* ViewController.swift in Sources */,
 				CFF4CCB420E8157B00A063BF /* StockStats.swift in Sources */,
 				CF6C5C4521114F6100220F97 /* StockBarView.swift in Sources */,
+				CF342D8B211FA6960009DB13 /* SymbolNetworkCall.swift in Sources */,
 				CFA41CB920DEB0AC0011EF30 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

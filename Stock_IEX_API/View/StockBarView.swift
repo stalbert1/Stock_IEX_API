@@ -105,8 +105,8 @@ class StockBarView: UIView {
         //do a function that passes in a price and price pct in graph and get back a correction factor...
         //determine the y pos of price label
         var priceLabelPosY: CGFloat = pricePos * 1.07
-        print("Price Pct in graph is \(pricePctInGraph)")
-        print("priceLabelYPos start is \(priceLabelPosY)")
+        //print("Price Pct in graph is \(pricePctInGraph)")
+        //print("priceLabelYPos start is \(priceLabelPosY)")
         
         //if stock is at 52 week high the pcice pct in graph is close to 1.00 as 100 percent
         if pricePctInGraph > 0.8 {
