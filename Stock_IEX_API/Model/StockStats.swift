@@ -12,8 +12,23 @@ struct StockStats : Codable {
     
     var fiftyDayMA: Float
     var twoHundredDayMA: Float
-    var fiftyTwoWeekHigh: Float
+    
+    //trying to correct a bug.  Currently if the current price drops below the 52 week high or low the current price will fall out of bounds.  May try frixing in the view.
+    //this is set when you get the data back in the form of the JSON.  Will need to make a 3rd struct that will be the data that is used to fill out the stock view chart...
+    var fiftyTwoWeekHigh: Float {
+        willSet {
+            print("will set fifty two week high")
+            //newValue
+        }
+        didSet {
+            print("did set 52 week high")
+            //oldValue
+        }
+    }
+    
+    
     var fiftyTwoWeekLow: Float
+    
     
     enum CodingKeys: String, CodingKey {
         
@@ -40,6 +55,8 @@ struct StockStats : Codable {
         
         self.fiftyTwoWeekHigh = try valueContainer.decode(Float.self, forKey: CodingKeys.fiftyTwoWeekHigh)
         self.fiftyTwoWeekLow = try valueContainer.decode(Float.self, forKey: CodingKeys.fiftyTwoWeekLow)
+        
+        //print("52 week high is \(self.fiftyTwoWeekHigh)")
         
         
     }

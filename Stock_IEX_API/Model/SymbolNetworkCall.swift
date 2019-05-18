@@ -30,6 +30,11 @@ class SymbolNetworkCall {
     private let suffixUrlStats = "/stats"
     private let suffixUrlQuote = "/quote"
     
+    //things to add under quote or StockInfo
+    //"changePercent": -0.01158
+    //"latestVolume": 20567140
+    //"avgTotalVolume": 29623234
+    
     init() {
         currentStockInfo = nil
         currentStockStats = nil
@@ -61,7 +66,7 @@ class SymbolNetworkCall {
 
 
                 } else {
-                    print("else statement")
+                    //print("else statement")
                 }
             }
         }//end of closure
@@ -98,6 +103,8 @@ class SymbolNetworkCall {
     
     //This will fire once the code is reached.  Delayed to wait to info has been received...
     func finishedGettingStatsAndInfo() {
+        
+        //I think this is the point in which I need to load the 3rd struct.  ON the 3rd struct I will be able to change the 52 week high and low so that if it is currently in a 52 week high or low it will make the current price be the low or the high...
         
         if delegate != nil {
             delegate?.didFinishLoadingSymbol()

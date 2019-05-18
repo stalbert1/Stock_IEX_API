@@ -14,19 +14,32 @@ struct StockInfo: Codable {
     var latestPrice: Float
     //"latestPrice":184.92,
     
-    //var fiftyDayMA: Float?
-    //var twoHundredDayMA: Float?
+    //new added items...
+    var changePercent: Float
+    var latestVolume: Float
+    var avgTotalVolume: Float
+    
+    //things to add under quote or StockInfo
+    //"changePercent": -0.01158
+    //"latestVolume": 20567140
+    //"avgTotalVolume": 29623234
+    
+    
 
 enum CodingKeys: String, CodingKey {
     
     case symbol
     case companyName
     case latestPrice
+    
+    //new added items...
+    case changePercent
+    case latestVolume
+    case avgTotalVolume
+    
     //if the names did not match up
     //case description = "explanation"
     
-    //case fiftyDayMA
-    //case twoHundredDayMA
     
 }
 
@@ -38,8 +51,10 @@ enum CodingKeys: String, CodingKey {
         self.companyName = try valueContainer.decode(String.self, forKey: CodingKeys.companyName)
         self.latestPrice = try valueContainer.decode(Float.self, forKey: CodingKeys.latestPrice)
         
-        //self.fiftyDayMA = try valueContainer.decode(Float.self, forKey: CodingKeys.fiftyDayMA)
-        //self.twoHundredDayMA = try valueContainer.decode(Float.self, forKey: CodingKeys.twoHundredDayMA)
+        //new items added
+        self.changePercent = try valueContainer.decode(Float.self, forKey: CodingKeys.changePercent)
+        self.latestVolume = try valueContainer.decode(Float.self, forKey: CodingKeys.latestVolume)
+        self.avgTotalVolume = try valueContainer.decode(Float.self, forKey: CodingKeys.avgTotalVolume)
         
     }
 
