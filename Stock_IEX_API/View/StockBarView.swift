@@ -20,6 +20,10 @@ class StockBarView: UIView {
     //test purposes to see the size of the device
     let screenSize = UIScreen.main.bounds
     
+    //This is a spinner that will be used when the network call is being made...
+    var spinner = UIActivityIndicatorView()
+    
+    
     //self children Views
     //Needed so that the labels will be deleted...
     private var priceLabel = UILabel()
@@ -71,6 +75,7 @@ class StockBarView: UIView {
 
     }
     
+    //will need to change this to take 1 struct item of type Stock
     
     func updateStockBarView (stockInfo: StockInfo, stockStats: StockStats) {
         
@@ -271,6 +276,7 @@ class StockBarView: UIView {
         
         //print("selfs super view is \(String(describing: self.superview))")
         
+        
         //tried .frame... no dice
         windowSize = self.bounds
         
@@ -283,13 +289,26 @@ class StockBarView: UIView {
         barGraphView.backgroundColor = UIColor.gray
         //adding the barView to self
         addSubview(barGraphView)
+        
+        //configure the spinner
+        //spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        spinner.frame = CGRect(x: barGraphView.bounds.midX - 25, y: barGraphView.bounds.midY - 25, width: 50, height: 50)
+        spinner.color = UIColor.red
+    
+        barGraphView.addSubview(spinner)
+        
+        //can change this to locate the spinner...
+        spinner.hidesWhenStopped = true
+        
+        
+        
  
-        print("the window size is \(windowSize)")
-        print("the size of bounds is  \(self.bounds)")
-        print("trying to find the correct one frame \(self.frame)")
+        //print("the window size is \(windowSize)")
+        //print("the size of bounds is  \(self.bounds)")
+        //print("trying to find the correct one frame \(self.frame)")
         
         //Try using screenSize
-        print("Screen size is... \(screenSize)")
+        //print("Screen size is... \(screenSize)")
         
     }
  

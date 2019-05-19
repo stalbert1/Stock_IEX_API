@@ -10,6 +10,8 @@ import Foundation
 
 struct Stock {
     
+    //This struct is only going to be used to display the data on my StockBarView.  Using this struct so that when stocks are at a 52 week high or low it will set the current price to that low or high.  This will keep the current price from falling outside of the stock bar view...
+    
     //From StockInfo
     var symbol: String
     var companyName: String
@@ -26,6 +28,10 @@ struct Stock {
     //this is set when you get the data back in the form of the JSON.  Will need to make a 3rd struct that will be the data that is used to fill out the stock view chart...
     var fiftyTwoWeekHigh: Float {
         willSet {
+            
+            if latestPrice > newValue {
+                 self.fiftyTwoWeekHigh = latestPrice
+            }
             print("will set fifty two week high")
             //newValue
         }
@@ -36,7 +42,13 @@ struct Stock {
     }
     
     
-    var fiftyTwoWeekLow: Float
+    var fiftyTwoWeekLow: Float {
+        willSet {
+            if latestPrice < newValue {
+                self.fiftyTwoWeekLow = latestPrice
+            }
+        }
+    }
     
     
     

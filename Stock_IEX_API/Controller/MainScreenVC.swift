@@ -74,25 +74,13 @@ class MainScreenVC: UIViewController, SaveStock, SymbolNetworkCallDelegate {
     func didFinishLoadingSymbol() {
         //This is the delegate that will be called when the network call is finished loading
         
-        //This will be called here?  Think I need to call it from the function that will be fired upon completion...
-        
-        //checking to see if stock is in a 52 week high currently
-        //delayed reaction here.  Not working for now
-//        if ((currentNetworkCallForStockInList?.currentStockInfo?.latestPrice)! > (currentNetworkCallForStockInList?.currentStockStats?.fiftyTwoWeekHigh)!) {
-//            
-//            print("in 52 week high now...")
-//            currentNetworkCallForStockInList?.currentStockStats?.fiftyTwoWeekHigh = (currentNetworkCallForStockInList?.currentStockInfo?.latestPrice)!
-//            
-//        }
-        
-        //checking to see if stock is in a 52 week low currently
-        //delayed reaction here.  Not working for now
-//        if ((currentNetworkCallForStockInList?.currentStockInfo?.latestPrice)! < (currentNetworkCallForStockInList?.currentStockStats?.fiftyTwoWeekLow)!) {
-//
-//            print("in 52 week low now...")
-//            currentNetworkCallForStockInList?.currentStockStats?.fiftyTwoWeekLow = (currentNetworkCallForStockInList?.currentStockInfo?.latestPrice)!
-//
-//        }
+        //This is where we will need to fill the new struct Stock with 2 structs that are used for the JSON call
+        print("fill the new Struct")
+        //Don't think this is the case???
+        //Maybe the struct should fill out inside the model class Symbol network call.  This way I wont have to do it 2 times one in the search VC and the other in the main VC...
+      
+        //stop the spinner that is in the StockBarView...
+        stockBarView.spinner.stopAnimating()
         
         //may need to make sure they are not nil?
         stockBarView.updateStockBarView(stockInfo: (currentNetworkCallForStockInList?.currentStockInfo)!, stockStats: (currentNetworkCallForStockInList?.currentStockStats)!)
@@ -168,6 +156,9 @@ extension MainScreenVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected indexPath.row \(indexPath.row)    ....    Or, in friendlier terms \(unorderedStockSymbols[indexPath.row])")
+        
+        //start the spinner that is in the StockBarView...
+        stockBarView.spinner.startAnimating()
         
         //Making the network call, should call the delegate function when the call is completed...
         currentNetworkCallForStockInList?.requestStockInfo(stockSymbol: unorderedStockSymbols[indexPath.row])

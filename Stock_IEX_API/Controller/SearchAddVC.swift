@@ -70,6 +70,9 @@ class SearchAddVC: UIViewController, SymbolNetworkCallDelegate {
     
     @IBAction func searchForStockSymbolPressed(_ sender: UIButton) {
         
+        //start the spinner that is in the StockBarView...
+        stockBarView.spinner.startAnimating()
+        
         currentNetworkCallForStock?.requestStockInfo(stockSymbol: txtStockSymbolRequest.text!)
         
         //dismiss the keyboard...
@@ -85,6 +88,10 @@ class SearchAddVC: UIViewController, SymbolNetworkCallDelegate {
     
     func didFinishLoadingSymbol() {
         //this is called when the stock symbol has loaded...
+        
+        //start the spinner that is in the StockBarView...
+        stockBarView.spinner.stopAnimating()
+        
         calculateAndUpdateGraph()
     }
     
