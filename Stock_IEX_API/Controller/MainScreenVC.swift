@@ -13,7 +13,7 @@ class MainScreenVC: UIViewController, SaveStock, SymbolNetworkCallDelegate {
     @IBOutlet weak var tblStockList: UITableView!
     @IBOutlet weak var stockBarView: StockBarView!
     
-    //this will be the instance of the current Network call which will hold the 2 structs of the current stock
+    //this will be the instance of the current Network call which will hold the 3 structs of the current stock
     var currentNetworkCallForStockInList: SymbolNetworkCall?
     
     //empty array of stocklist
@@ -74,16 +74,13 @@ class MainScreenVC: UIViewController, SaveStock, SymbolNetworkCallDelegate {
     func didFinishLoadingSymbol() {
         //This is the delegate that will be called when the network call is finished loading
         
-        //This is where we will need to fill the new struct Stock with 2 structs that are used for the JSON call
-        print("fill the new Struct")
-        //Don't think this is the case???
-        //Maybe the struct should fill out inside the model class Symbol network call.  This way I wont have to do it 2 times one in the search VC and the other in the main VC...
-      
         //stop the spinner that is in the StockBarView...
         stockBarView.spinner.stopAnimating()
         
-        //may need to make sure they are not nil?
-        stockBarView.updateStockBarView(stockInfo: (currentNetworkCallForStockInList?.currentStockInfo)!, stockStats: (currentNetworkCallForStockInList?.currentStockStats)!)
+        if currentNetworkCallForStockInList?.currentStock != nil {
+            stockBarView.updateStockBarView(stock: currentNetworkCallForStockInList!.currentStock!)
+        }
+        
     }
     
     func displayTableData () {

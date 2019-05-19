@@ -32,11 +32,11 @@ struct Stock {
             if latestPrice > newValue {
                  self.fiftyTwoWeekHigh = latestPrice
             }
-            print("will set fifty two week high")
+            print("will set fifty two week high \(newValue)")
             //newValue
         }
         didSet {
-            print("did set 52 week high")
+            print("did set 52 week high \(oldValue)")
             //oldValue
         }
     }
@@ -46,11 +46,29 @@ struct Stock {
         willSet {
             if latestPrice < newValue {
                 self.fiftyTwoWeekLow = latestPrice
+                print("Will set fifty two week low)")
             }
         }
     }
     
+    public func printStockDetails() {
+        print("Company name is \(self.companyName).  52 week high is \(fiftyTwoWeekHigh).  52 week low is \(fiftyTwoWeekLow)")
+    }
     
+    //This will look to see if the stock is at 52 week low or high and alter the 52 week low or high to be the current price...
+    public mutating func checkStatusOfHighLow() {
+        
+        if latestPrice > fiftyTwoWeekHigh {
+            //at 52 week high
+            fiftyTwoWeekHigh = latestPrice
+        }
+        
+        if latestPrice < fiftyTwoWeekLow {
+            //at 52 week low
+            fiftyTwoWeekLow = latestPrice
+        }
+        
+    }
     
     
 }

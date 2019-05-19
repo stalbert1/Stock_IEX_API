@@ -18,6 +18,8 @@ class SymbolNetworkCall {
     public var currentStockStats: StockStats?
     public var currentStockInfo: StockInfo?
     
+    public var currentStock: Stock?
+    
     var delegate: SymbolNetworkCallDelegate? = nil
     
     //baseURL = "https://api.iextrading.com/1.0"
@@ -104,10 +106,25 @@ class SymbolNetworkCall {
     //This will fire once the code is reached.  Delayed to wait to info has been received...
     func finishedGettingStatsAndInfo() {
         
-        //I think this is the point in which I need to load the 3rd struct.  ON the 3rd struct I will be able to change the 52 week high and low so that if it is currently in a 52 week high or low it will make the current price be the low or the high...
-        
+        //This is the point in which I need to load the 3rd struct.  ON the 3rd struct I will be able to change the 52 week high and low so that if it is currently in a 52 week high or low it will make the current price be the low or the high...
+       
         if delegate != nil {
+            
+            
+            //print(currentStockInfo?.companyName)
+            //print(currentStockStats?.fiftyTwoWeekHigh)
+            if currentStockStats != nil && currentStockInfo != nil {
+                currentStock = Stock(symbol: (currentStockInfo?.symbol)!, companyName: currentStockInfo!.companyName, latestPrice: currentStockInfo!.latestPrice, changePercent: currentStockInfo!.changePercent, latestVolume: currentStockInfo!.latestVolume, avgTotalVolume: currentStockInfo!.avgTotalVolume, fiftyDayMA: currentStockStats!.fiftyDayMA, twoHundredDayMA: currentStockStats!.twoHundredDayMA, fiftyTwoWeekHigh: currentStockStats!.fiftyTwoWeekHigh, fiftyTwoWeekLow: currentStockStats!.fiftyTwoWeekLow)
+                
+                //will be neccesary to set the correct low and high
+                currentStock?.checkStatusOfHighLow()
+                currentStock?.printStockDetails()
+                
+            }
+            
             delegate?.didFinishLoadingSymbol()
+            print("in the delegarte")
+            
         }
         
     }

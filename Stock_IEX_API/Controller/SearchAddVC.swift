@@ -55,14 +55,14 @@ class SearchAddVC: UIViewController, SymbolNetworkCallDelegate {
     
     func calculateAndUpdateGraph () {
         
-        if (currentNetworkCallForStock?.currentStockStats != nil && currentNetworkCallForStock?.currentStockInfo != nil) {
+        if currentNetworkCallForStock?.currentStock != nil {
             
             //updating the stockbar view
-            stockBarView.updateStockBarView(stockInfo: (currentNetworkCallForStock?.currentStockInfo!)!, stockStats: (currentNetworkCallForStock?.currentStockStats!)!)
+            stockBarView.updateStockBarView(stock: currentNetworkCallForStock!.currentStock!)
             
             //updating the top view
-            lblCompanyName.text = currentNetworkCallForStock?.currentStockInfo?.companyName
-            lblStockSymbol.text = currentNetworkCallForStock?.currentStockInfo?.symbol
+            lblCompanyName.text = currentNetworkCallForStock?.currentStock?.companyName
+            lblStockSymbol.text = currentNetworkCallForStock?.currentStock?.symbol
         }
         
     }
