@@ -29,7 +29,7 @@ class MainScreenVC: UIViewController, SaveStock, SymbolNetworkCallDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor.darkGray
         
-        print("stockList has \(stockList.count) count")
+        //print("stockList has \(stockList.count) count")
         if stockList.count == 0 {
             //load the dictionary as NSUserDefaults
             let posStoredVals = UserDefaults.standard.object(forKey: "storedStocksDict")
@@ -94,6 +94,7 @@ class MainScreenVC: UIViewController, SaveStock, SymbolNetworkCallDelegate {
         }
         
         //print(stockSymbols.description)
+        
         
         //This is making an array from the set.  Will need to clear out the array to begin with...
         unorderedStockSymbols.removeAll()
@@ -160,9 +161,28 @@ extension MainScreenVC: UITableViewDelegate, UITableViewDataSource {
         //Making the network call, should call the delegate function when the call is completed...
         currentNetworkCallForStockInList?.requestStockInfo(stockSymbol: unorderedStockSymbols[indexPath.row])
         
+    }
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        
-        
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            //print("Need to delete \(indexPath.row)")
+            //print(unorderedStockSymbols[indexPath.row])
+            
+            //this would remove the dictionary entry...
+            stockList[unorderedStockSymbols[indexPath.row]] = nil
+            
+            //need to remove "ua" for under amour
+            stockSymbols.remove(unorderedStockSymbols[indexPath.row])
+            
+            //Save the dictionary as NSUserDefaults
+            //UserDefaults.standard.set(<#T##value: Any?##Any?#>, forKey: <#T##String#>)
+            UserDefaults.standard.set(stockList, forKey: "storedStocksDict")
+            
+            displayTableData()
+            
+        }//end if
     }
     
     
